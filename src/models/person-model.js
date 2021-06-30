@@ -8,7 +8,7 @@ const PersonSchema = new mongoose.Schema({
   roles: [
     {
       type: String,
-      enum: ["director", "screenwriter", "actor", "producer", "composer"],
+      enum: ["DIRECTOR", "SCREENWRITER", "ACTOR", "PRODUCER", "COMPOSER"],
     },
   ],
   birthday: {
@@ -17,22 +17,7 @@ const PersonSchema = new mongoose.Schema({
   deathday: {
     type: Date,
   },
-  movies: [
-    {
-      movieId: {
-        type: mongoose.SchemaTypes.ObjectId,
-        required: true,
-        ref: "movie",
-      },
-      roles: [
-        {
-          type: String,
-          required: true,
-          enum: ["director", "screenwriter", "actor", "producer", "composer"],
-        },
-      ],
-    },
-  ],
+  placeOfBirth: String,
 });
 
 const PersonModel = new mongoose.model("person", PersonSchema);

@@ -1,4 +1,5 @@
 const db = require("../models");
+const { generateUrl } = require("../utils/utils");
 
 const {
   generateNextPagePath,
@@ -97,6 +98,8 @@ async function updateMovie(req, res, next) {
 async function fetchMovies(req, res, next) {
   const { size = 20, offset = 0 } = req.query;
 
+  const requestUrl = generateUrl(req);
+
   const pageSize = parseInt(size);
   const pageOffset = parseInt(offset);
 
@@ -109,13 +112,13 @@ async function fetchMovies(req, res, next) {
     res.status(201).send({
       total: totalMovies,
       next: generateNextPagePath({
-        pathPrefix: "/movies",
+        pathPrefix: requestUrl,
         currOffset: pageOffset,
         pageSize: pageSize,
         totalItems: totalMovies,
       }),
       prev: generatePrevPagePath({
-        pathPrefix: "/movies",
+        pathPrefix: requestUrl,
         currOffset: pageOffset,
         pageSize: pageSize,
       }),

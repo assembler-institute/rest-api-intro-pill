@@ -9,6 +9,8 @@ const {
   MONGO_DB_URL_DEVELOPMENT,
   MONGO_DB_URL_TEST,
   PORT = 4000,
+  ENCRYPTION_SALT_DEVELOPMENT,
+  ENCRYPTION_SALT_PRODUCTION,
 } = process.env;
 
 const ENV = NODE_ENV || "development";
@@ -30,6 +32,9 @@ const CONFIG = {
     db: {
       url: MONGO_DB_URL_PRODUCTION,
     },
+    encrypt: {
+      salt: ENCRYPTION_SALT_PRODUCTION,
+    },
   },
   development: {
     app: {
@@ -44,6 +49,9 @@ const CONFIG = {
     },
     db: {
       url: MONGO_DB_URL_DEVELOPMENT,
+    },
+    encrypt: {
+      salt: ENCRYPTION_SALT_DEVELOPMENT,
     },
   },
   test: {
@@ -63,4 +71,6 @@ const CONFIG = {
   },
 };
 
-module.exports = CONFIG[ENV];
+module.exports = {
+  config: CONFIG[ENV],
+};

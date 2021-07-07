@@ -1,5 +1,6 @@
 const db = require("../models");
 const { generateUrl } = require("../utils/utils");
+const { generateResponse } = require("../utils/generateResponse");
 
 const {
   generateNextPagePath,
@@ -32,9 +33,17 @@ async function addMovie(req, res, next) {
       genres: genres,
     });
 
-    res.status(201).send({
-      data: movie._id,
+    const credits = await db.MovieCredits.create({
+      movieId: movie._id,
+      crew: [],
+      cast: [],
     });
+
+    res.status(201).send(
+      generateResponse({
+        data: movie._id,
+      }),
+    );
   } catch (err) {
     next(err);
   }
@@ -87,9 +96,11 @@ async function updateMovie(req, res, next) {
       },
     ).lean();
 
-    res.status(200).send({
-      data: movie,
-    });
+    res.status(200).send(
+      generateResponse({
+        data: movie,
+      }),
+    );
   } catch (err) {
     next(err);
   }
@@ -109,21 +120,25 @@ async function fetchMovies(req, res, next) {
       .skip(pageOffset)
       .limit(pageSize);
 
-    res.status(201).send({
-      total: totalMovies,
-      next: generateNextPagePath({
-        pathPrefix: requestUrl,
-        currOffset: pageOffset,
-        pageSize: pageSize,
-        totalItems: totalMovies,
+    res.status(201).send(
+      generateResponse({
+        data: {
+          total: totalMovies,
+          next: generateNextPagePath({
+            pathPrefix: requestUrl,
+            currOffset: pageOffset,
+            pageSize: pageSize,
+            totalItems: totalMovies,
+          }),
+          prev: generatePrevPagePath({
+            pathPrefix: requestUrl,
+            currOffset: pageOffset,
+            pageSize: pageSize,
+          }),
+          data: movies,
+        },
       }),
-      prev: generatePrevPagePath({
-        pathPrefix: requestUrl,
-        currOffset: pageOffset,
-        pageSize: pageSize,
-      }),
-      data: movies,
-    });
+    );
   } catch (err) {
     next(err);
   }
@@ -135,9 +150,11 @@ async function fetchMovie(req, res, next) {
   try {
     const movie = await db.Movie.findOne({ _id: movieId }, "-__v").lean();
 
-    res.status(200).send({
-      data: movie,
-    });
+    res.status(200).send(
+      generateResponse({
+        data: movie,
+      }),
+    );
   } catch (err) {
     next(err);
   }

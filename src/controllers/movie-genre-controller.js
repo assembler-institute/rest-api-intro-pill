@@ -1,5 +1,6 @@
 const db = require("../models");
 const { generateUrl } = require("../utils/utils");
+const { generateResponse } = require("../utils/generateResponse");
 
 const {
   generateNextPagePath,
@@ -14,9 +15,11 @@ async function addGenre(req, res, next) {
       name: name,
     });
 
-    res.status(201).send({
-      data: genre._id,
-    });
+    res.status(201).send(
+      generateResponse({
+        data: genre._id,
+      }),
+    );
   } catch (err) {
     next(err);
   }
@@ -35,21 +38,25 @@ async function fetchGenres(req, res, next) {
       .skip(pageOffset)
       .limit(pageSize);
 
-    res.status(201).send({
-      total: totalGenres,
-      next: generateNextPagePath({
-        pathPrefix: requestUrl,
-        currOffset: pageOffset,
-        pageSize: pageSize,
-        totalItems: totalGenres,
+    res.status(201).send(
+      generateResponse({
+        data: {
+          total: totalGenres,
+          next: generateNextPagePath({
+            pathPrefix: requestUrl,
+            currOffset: pageOffset,
+            pageSize: pageSize,
+            totalItems: totalGenres,
+          }),
+          prev: generatePrevPagePath({
+            pathPrefix: requestUrl,
+            currOffset: pageOffset,
+            pageSize: pageSize,
+          }),
+          data: genres,
+        },
       }),
-      prev: generatePrevPagePath({
-        pathPrefix: requestUrl,
-        currOffset: pageOffset,
-        pageSize: pageSize,
-      }),
-      data: genres,
-    });
+    );
   } catch (err) {
     next(err);
   }
@@ -61,9 +68,11 @@ async function fetchGenre(req, res, next) {
   try {
     const genre = await db.MovieGenre.findOne({ name: name }, "-__v").lean();
 
-    res.status(200).send({
-      data: genre,
-    });
+    res.status(200).send(
+      generateResponse({
+        data: genre,
+      }),
+    );
   } catch (err) {
     next(err);
   }

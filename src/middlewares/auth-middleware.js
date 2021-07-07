@@ -1,5 +1,4 @@
-const { getAuthToken } = require("../services/auth/get-auth-token");
-const { verifyAuthToken } = require("../services/auth/verify-auth-token");
+const { getAuthToken, verifyAuthToken } = require("../services/auth");
 const db = require("../models");
 
 async function authMiddleware(req, res, next) {

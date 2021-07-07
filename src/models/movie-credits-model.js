@@ -7,16 +7,29 @@ const MovieCreditsSchema = new mongoose.Schema({
   },
   crew: [
     {
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: "person",
+      personId: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "person",
+      },
+      department: String,
+      job: String,
     },
   ],
   cast: [
     {
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: "person",
+      personId: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "person",
+      },
+      character: String,
     },
   ],
+});
+
+MovieCreditsSchema.virtual("user", {
+  ref: "Person",
+  localField: "cast.personId",
+  foreignField: "_id",
 });
 
 const MovieCreditsModel = new mongoose.model(

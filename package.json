@@ -30,9 +30,11 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "helmet": "^4.6.0",
+    "jsonwebtoken": "^8.5.1",
     "loglevel": "^1.7.1",
     "mongoose": "^5.12.15",
     "npm-check-updates": "^11.7.1",
+    "rand-token": "^1.0.1",
     "validator": "^13.6.0"
   },
   "devDependencies": {

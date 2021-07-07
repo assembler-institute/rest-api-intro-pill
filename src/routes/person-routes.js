@@ -1,12 +1,14 @@
 const Router = require("express").Router;
 
-// const { authMiddleware } = require("../middlewares");
+const { authMiddleware } = require("../middlewares");
 const { personController } = require("../controllers");
 
 const personRouter = Router();
 
-personRouter.get("/:id", personController.fetchPerson);
-// personRouter.post("/", personController.addPerson);
-personRouter.get("/", personController.fetchPersons);
+personRouter.get("/:id", authMiddleware, personController.fetchPerson);
+personRouter.put("/:id", authMiddleware, personController.updatePerson);
 
-module.exports = personRouter;
+personRouter.get("/", authMiddleware, personController.fetchPersons);
+personRouter.post("/", authMiddleware, personController.addPerson);
+
+module.exports = { personRouter: personRouter };

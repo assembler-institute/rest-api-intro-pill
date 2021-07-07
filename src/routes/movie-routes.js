@@ -1,14 +1,30 @@
 const Router = require("express").Router;
 
-// const { authMiddleware } = require("../middlewares");
-const { movieController } = require("../controllers");
+const { authMiddleware } = require("../middlewares");
+const { movieController, movieCreditsController } = require("../controllers");
 
 const movieRouter = Router();
 
-movieRouter.get("/:id", movieController.fetchMovie);
-movieRouter.put("/:id", movieController.updateMovie);
+movieRouter.get(
+  "/:id/credits",
+  authMiddleware,
+  movieCreditsController.fetchCredits,
+);
+movieRouter.post(
+  "/:id/credits",
+  authMiddleware,
+  movieCreditsController.addCredits,
+);
+movieRouter.put(
+  "/:id/credits",
+  authMiddleware,
+  movieCreditsController.updateCredits,
+);
 
-movieRouter.get("/", movieController.fetchMovies);
-movieRouter.post("/", movieController.addMovie);
+movieRouter.get("/:id", authMiddleware, movieController.fetchMovie);
+movieRouter.put("/:id", authMiddleware, movieController.updateMovie);
 
-module.exports = movieRouter;
+movieRouter.get("/", authMiddleware, movieController.fetchMovies);
+movieRouter.post("/", authMiddleware, movieController.addMovie);
+
+module.exports = { movieRouter: movieRouter };

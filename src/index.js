@@ -1,5 +1,5 @@
 const app = require("./server");
-const config = require("./config/config");
+const { config } = require("./config");
 const connect = require("./db/connect");
 
 const { seedMovies, seedMovieGenres } = require("./db/seed");

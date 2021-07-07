@@ -1,7 +1,7 @@
-// const { authMiddleware } = require("./auth-middleware");
+const { authMiddleware } = require("./auth-middleware");
 const { errorMiddleware } = require("./error-middleware");
 
 module.exports = {
-  //authMiddleware: authMiddleware,
+  authMiddleware: authMiddleware,
   errorMiddleware: errorMiddleware,
 };
